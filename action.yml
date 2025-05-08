@@ -1,0 +1,21 @@
+name: 'Custom Test Action'
+description: 'A custom action that can be used within the same repository'
+inputs:
+  message:
+    description: 'Message to echo'
+    required: true
+    default: 'Hello from custom action!'
+runs:
+  using: 'composite'
+  steps:
+    - name: Echo the message
+      shell: bash
+      run: echo "${{ inputs.message }}"
+    - name: Show environment information
+      shell: bash
+      run: |
+        echo "Running from repository: $GITHUB_REPOSITORY"
+        echo "Current workflow: $GITHUB_WORKFLOW"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
