@@ -1,0 +1,26 @@
+name: Test Custom Action
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      custom_message:
+        description: 'Custom message to pass to the action'
+        required: false
+        default: 'Triggered manually'
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Use local custom action
+        uses: ./
+        with:
+          message: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.custom_message || 'Triggered by push event' }}
+      
+      - name: Another job step
+        run: echo "This is a regular workflow step"
